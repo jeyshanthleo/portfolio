@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jeyshanth Leo | Data Analyst</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+<style>
+:root{
+  --bg:#0a0a0f;--surface:#111118;--surface2:#181825;
+  --accent:#00e5a0;--accent2:#5b8fff;--accent3:#ff6b6b;
+  --text:#e8e8f0;--text-muted:#7878a0;--border:#2a2a3e
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-weight:300;overflow-x:hidden}
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(0,229,160,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,229,160,.03) 1px,transparent 1px);
+  background-size:60px 60px;pointer-events:none;z-index:0
+}
+
+nav{
+  position:fixed;top:0;width:100%;z-index:900;
+  padding:20px 60px;display:flex;justify-content:space-between;align-items:center;
+  background:rgba(10,10,15,.9);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border)
+}
+.nav-logo{font-family:'DM Mono',monospace;font-size:14px;color:var(--accent);letter-spacing:.1em}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{
+  color:var(--text-muted);text-decoration:none;font-size:13px;
+  font-family:'DM Mono',monospace;letter-spacing:.05em;transition:color .2s
+}
+.nav-links a:hover{color:var(--accent)}
+
+.hero{
+  position:relative;min-height:100vh;display:flex;align-items:center;
+  padding:120px 60px 80px;z-index:1
+}
+.hero-glow{
+  position:absolute;width:700px;height:700px;
+  background:radial-gradient(circle,rgba(0,229,160,.07) 0%,transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'DM Mono',monospace;font-size:12px;color:var(--accent);
+  letter-spacing:.15em;text-transform:uppercase;margin-bottom:24px;
+  padding:8px 16px;border:1px solid rgba(0,229,160,.3);
+  border-radius:100px;background:rgba(0,229,160,.05)
+}
+.hero-tag::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+
+h1{font-family:'DM Serif Display',serif;font-size:clamp(52px,7vw,96px);line-height:1;margin-bottom:16px}
+h1 .italic{font-style:italic;color:var(--accent)}
+
+.hero-subtitle{font-size:18px;color:var(--text-muted);margin-bottom:40px;max-width:600px;line-height:1.7}
+.hero-cta{display:flex;gap:16px;flex-wrap:wrap}
+
+.btn-primary{
+  padding:14px 32px;background:var(--accent);color:#000;text-decoration:none;
+  font-size:14px;font-weight:600;letter-spacing:.05em;border-radius:4px;
+  transition:all .2s;font-family:'DM Mono',monospace;border:none;cursor:pointer
+}
+.btn-primary:hover{background:#fff;transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,229,160,.3)}
+
+.btn-secondary{
+  padding:14px 32px;background:transparent;color:var(--text);text-decoration:none;
+  font-size:14px;font-weight:400;letter-spacing:.05em;border:1px solid var(--border);
+  border-radius:4px;transition:all .2s;font-family:'DM Mono',monospace
+}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+
+.btn-resume{
+  padding:14px 32px;background:transparent;color:var(--accent2);text-decoration:none;
+  font-size:14px;font-weight:400;letter-spacing:.05em;border:1px solid var(--accent2);
+  border-radius:4px;transition:all .2s;font-family:'DM Mono',monospace;
+  display:inline-flex;align-items:center;gap:8px
+}
+.btn-resume:hover{background:rgba(91,143,255,.1);transform:translateY(-2px)}
+
+.stats-row{
+  display:flex;gap:60px;margin-top:70px;padding-top:70px;
+  border-top:1px solid var(--border);flex-wrap:wrap
+}
+.stat-value{font-family:'DM Serif Display',serif;font-size:40px;color:var(--accent);line-height:1}
+.stat-label{font-size:12px;color:var(--text-muted);font-family:'DM Mono',monospace;letter-spacing:.1em;margin-top:6px}
+
+section{position:relative;z-index:1;padding:100px 60px}
+.section-label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.section-title{font-family:'DM Serif Display',serif;font-size:clamp(36px,4vw,56px);margin-bottom:60px;line-height:1.1}
+.section-title em{font-style:italic;color:var(--accent)}
+
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.about-text p{font-size:16px;line-height:1.8;color:var(--text-muted);margin-bottom:20px}
+.about-text p strong{color:var(--text)}
+
+.skills-grid{display:grid;gap:12px}
+.skill-category{padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:8px;transition:border-color .2s}
+.skill-category:hover{border-color:rgba(0,229,160,.3)}
+.skill-cat-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.skill-tags{display:flex;flex-wrap:wrap;gap:8px}
+.skill-tag{font-size:12px;padding:4px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:100px;color:var(--text-muted);font-family:'DM Mono',monospace}
+
+.timeline{position:relative;padding-left:32px}
+.timeline::before{content:'';position:absolute;left:0;top:8px;bottom:0;width:1px;background:var(--border)}
+.timeline-item{position:relative;padding-bottom:48px}
+.timeline-item::before{content:'';position:absolute;left:-37px;top:8px;width:10px;height:10px;background:var(--border);border-radius:50%}
+.timeline-item:first-child::before{background:var(--accent);box-shadow:0 0 12px var(--accent)}
+.timeline-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;flex-wrap:wrap;gap:8px}
+.timeline-role{font-size:18px;font-weight:600;color:var(--text)}
+.timeline-date{font-family:'DM Mono',monospace;font-size:12px;color:var(--text-muted);padding:4px 12px;background:var(--surface2);border-radius:100px}
+.timeline-company{font-size:14px;color:var(--accent);font-family:'DM Mono',monospace;margin-bottom:16px}
+.timeline-desc{font-size:14px;color:var(--text-muted);line-height:1.7}
+.timeline-desc li{margin-bottom:6px;padding-left:16px;list-style:none;position:relative}
+.timeline-desc li::before{content:'→';position:absolute;left:0;color:var(--accent);opacity:.5}
+
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+.project-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:32px;
+  transition:all .3s;position:relative;overflow:hidden
+}
+.project-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));opacity:0;transition:opacity .3s
+}
+.project-card:hover{border-color:rgba(0,229,160,.3);transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.project-card:hover::before{opacity:1}
+.project-card:nth-child(2)::before{background:linear-gradient(90deg,var(--accent2),var(--accent3))}
+.project-card:nth-child(3)::before{background:linear-gradient(90deg,var(--accent3),var(--accent))}
+
+.project-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
+.project-icon{width:48px;height:48px;background:rgba(0,229,160,.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.project-card:nth-child(2) .project-icon{background:rgba(91,143,255,.1)}
+.project-card:nth-child(3) .project-icon{background:rgba(255,107,107,.1)}
+
+.project-tag{
+  font-family:'DM Mono',monospace;font-size:10px;padding:4px 10px;background:rgba(0,229,160,.08);
+  color:var(--accent);border:1px solid rgba(0,229,160,.2);border-radius:100px;
+  letter-spacing:.08em;text-transform:uppercase
+}
+.project-card:nth-child(2) .project-tag{background:rgba(91,143,255,.08);color:var(--accent2);border-color:rgba(91,143,255,.2)}
+.project-card:nth-child(3) .project-tag{background:rgba(255,107,107,.08);color:var(--accent3);border-color:rgba(255,107,107,.2)}
+
+.project-title{font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:12px;line-height:1.2}
+.project-title a{color:inherit;text-decoration:none}
+.project-title a:hover{text-decoration:underline}
+.project-desc{font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:20px}
+
+.project-metrics{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px;padding:16px;background:var(--surface2);border-radius:8px}
+.metric-val{font-family:'DM Mono',monospace;font-size:18px;color:var(--accent);font-weight:500}
+.metric-lbl{font-size:10px;color:var(--text-muted);letter-spacing:.05em;margin-top:2px}
+.project-techs{display:flex;flex-wrap:wrap;gap:6px}
+.tech-pill{font-family:'DM Mono',monospace;font-size:11px;padding:3px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text-muted)}
+
+/* CHARTS */
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;position:relative}
+.chart-card:hover{border-color:rgba(0,229,160,.2)}
+.chart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.chart-title{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted)}
+.chart-badge{font-family:'DM Mono',monospace;font-size:10px;padding:3px 10px;border:1px solid var(--border);border-radius:4px;color:var(--text-muted);background:var(--surface2)}
+.chart-canvas-wrap{position:relative;height:280px}
+
+/* CERTS */
+.certs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.cert-card{padding:24px;background:var(--surface);border:1px solid var(--border);border-radius:8px;display:flex;gap:16px;align-items:flex-start;transition:all .2s}
+.cert-card:hover{border-color:rgba(0,229,160,.3);transform:translateX(4px)}
+.cert-icon{width:40px;height:40px;flex-shrink:0;background:var(--surface2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.cert-name{font-size:14px;font-weight:500;margin-bottom:4px}
+.cert-issuer{font-size:12px;color:var(--accent);font-family:'DM Mono',monospace;margin-bottom:4px}
+.cert-date{font-size:11px;color:var(--text-muted);font-family:'DM Mono',monospace}
+
+.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.edu-card{padding:32px;background:var(--surface);border:1px solid var(--border);border-radius:12px;transition:all .3s}
+.edu-card:hover{border-color:rgba(0,229,160,.3)}
+.edu-degree{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:6px}
+.edu-school{font-size:14px;color:var(--accent);font-family:'DM Mono',monospace;margin-bottom:8px}
+.edu-period{font-size:12px;color:var(--text-muted);margin-bottom:12px}
+
+.pub-card{
+  padding:32px;background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;display:flex;gap:32px;align-items:flex-start;transition:all .3s
+}
+.pub-card:hover{border-color:rgba(91,143,255,.3)}
+.pub-year{font-family:'DM Serif Display',serif;font-size:56px;color:var(--border);line-height:1;flex-shrink:0}
+.pub-title{font-size:18px;font-weight:500;margin-bottom:8px;line-height:1.3}
+.pub-venue{font-family:'DM Mono',monospace;font-size:12px;color:var(--accent2);margin-bottom:12px}
+.pub-desc{font-size:14px;color:var(--text-muted);line-height:1.7}
+.publication-card{cursor:pointer;transition:all .3s}
+.publication-card:hover{transform:translateY(-4px);border-color:rgba(0,229,160,.35);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.paper-link-badge{font-family:'DM Mono', monospace;font-size:11px;padding:6px 12px;border:1px solid var(--accent2);border-radius:6px;color:var(--accent2);background:rgba(91,143,255,.08);white-space:nowrap}
+
+.contact-wrapper{text-align:center;max-width:750px;margin:0 auto}
+.social-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.social-link{
+  display:flex;align-items:center;gap:8px;padding:12px 24px;background:var(--surface);
+  border:1px solid var(--border);border-radius:8px;color:var(--text-muted);text-decoration:none;
+  font-family:'DM Mono',monospace;font-size:13px;transition:all .2s
+}
+.social-link:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+
+/* CONTACT FORM */
+.contact-subtext{color:var(--text-muted);font-size:16px;margin-bottom:28px;line-height:1.7;text-align:center}
+.contact-card{
+  margin-top:10px;background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:26px;text-align:left;transition:all .3s
+}
+.contact-card:hover{border-color:rgba(0,229,160,.25);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.contact-card-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.contact-card-title{font-family:'DM Serif Display', serif;font-size:22px;line-height:1.1}
+.contact-card-badge{font-family:'DM Mono', monospace;font-size:10px;padding:4px 10px;border:1px solid var(--border);border-radius:6px;color:var(--text-muted);background:var(--surface2);letter-spacing:.12em}
+.contact-form label{
+  font-family:'DM Mono', monospace;font-size:11px;color:var(--text-muted);
+  letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:8px
+}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field input,.field textarea{
+  width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;
+  padding:12px 14px;color:var(--text);font-family:'Outfit', sans-serif;font-size:14px;
+  outline:none;transition:border-color .2s, box-shadow .2s
+}
+.field textarea{resize:vertical;min-height:120px}
+.field input:focus,.field textarea:focus{border-color:rgba(0,229,160,.45);box-shadow:0 0 0 4px rgba(0,229,160,.08)}
+.form-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:16px}
+.form-note{margin-top:12px;font-size:12px;color:var(--text-muted);font-family:'DM Mono', monospace;line-height:1.6}
+
+#formStatus{display:none;margin-top:12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--accent)}
+
+/* FOOTER */
+footer{
+  position:relative;z-index:1;padding:30px 60px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center
+}
+footer p{font-family:'DM Mono',monospace;font-size:12px;color:var(--text-muted)}
+.divider{height:1px;background:var(--border);margin:0 60px;position:relative;z-index:1}
+
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:900px){.charts-grid{grid-template-columns:1fr}}
+@media(max-width:768px){
+  nav{padding:16px 24px}.nav-links{display:none}
+  section{padding:60px 24px}.hero{padding:100px 24px 60px}
+  .about-grid,.edu-grid{grid-template-columns:1fr}
+  .stats-row{gap:32px}.projects-grid{grid-template-columns:1fr}
+  .pub-card{flex-direction:column}
+  footer{padding:24px;flex-direction:column;gap:12px;text-align:center}
+  .divider{margin:0 24px}
+  .contact-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+<nav>
+  <div class="nav-logo">jeyshanth.leo</div>
+  <ul class="nav-links">
+    <li><a href="#about">about</a></li>
+    <li><a href="#experience">experience</a></li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#charts">charts</a></li>
+    <li><a href="#certifications">certifications</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Open to Analyst Roles &middot; Boston, MA</div>
+    <h1>Jeyshanth<br><span class="italic">Leo</span></h1>
+    <p class="hero-subtitle">Data Analyst &amp; MSBA candidate at Northeastern University. Turning complex datasets into clear, impactful business solutions using Python, SQL, Alteryx, and machine learning.</p>
+
+    <div class="hero-cta">
+      <a href="https://www.linkedin.com/in/jeyshanth/" target="_blank" class="btn-primary" rel="noopener noreferrer">&#8594; Connect on LinkedIn</a>
+      <a href="https://github.com/jeyshanthleo" target="_blank" class="btn-secondary" rel="noopener noreferrer">&#128025; GitHub</a>
+      <!-- Resume is now a direct file link (works with Live Server + GitHub Pages) -->
+      <a href="./assets/Docs/Jeyshanth_Leo_resume.pdf" target="_blank" rel="noopener noreferrer" class="btn-resume" id="resumeBtn">↓ Resume</a>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-value">4</div><div class="stat-label">Internships</div></div>
+      <div class="stat-item"><div class="stat-value">5+</div><div class="stat-label">ML Projects</div></div>
+      <div class="stat-item"><div class="stat-value">95.4%</div><div class="stat-label">Best Model Accuracy</div></div>
+      <div class="stat-item"><div class="stat-value">&#127942;</div><div class="stat-label">Best Paper Award</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="about">
+  <div class="section-label">01 &mdash; About</div>
+  <div class="section-title">Data-driven<br><em>problem solver.</em></div>
+
+  <div class="about-grid fade-in">
+    <div class="about-text">
+      <p>I'm a <strong>Master's student in Business Analytics at Northeastern University</strong>, passionate about using data to drive real business decisions. My work sits at the intersection of analytics, machine learning, and storytelling through data.</p>
+      <p>Currently interning as a <strong>Data Analyst at HubSpot</strong>, I work on customer experience datasets &mdash; uncovering the patterns behind user frustration and building visualizations that translate insights into action.</p>
+      <p>I've built end-to-end ML systems for <strong>churn prediction</strong>, <strong>revenue leakage detection</strong>, and <strong>NLP-based fake review detection</strong>. My research was published by <strong>Springer Nature (ICISD, 2025)</strong> and won the Best Paper Award.</p>
+    </div>
+
+    <div class="skills-grid">
+      <div class="skill-category">
+        <div class="skill-cat-label">Languages</div>
+        <div class="skill-tags"><span class="skill-tag">Python</span><span class="skill-tag">SQL</span><span class="skill-tag">R</span><span class="skill-tag">Apex</span></div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-label">Analytics &amp; ML</div>
+        <div class="skill-tags"><span class="skill-tag">Pandas</span><span class="skill-tag">Scikit-learn</span><span class="skill-tag">NumPy</span><span class="skill-tag">Machine Learning</span><span class="skill-tag">NLP</span><span class="skill-tag">LSTM</span></div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-label">Visualization &amp; BI</div>
+        <div class="skill-tags"><span class="skill-tag">Tableau</span><span class="skill-tag">Power BI</span><span class="skill-tag">Plotly</span><span class="skill-tag">Streamlit</span><span class="skill-tag">Excel</span></div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-label">Platforms &amp; Tools</div>
+        <div class="skill-tags"><span class="skill-tag">Alteryx</span><span class="skill-tag">HubSpot</span><span class="skill-tag">Salesforce</span><span class="skill-tag">Google Analytics</span><span class="skill-tag">AWS</span><span class="skill-tag">GitHub</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="experience">
+  <div class="section-label">02 &mdash; Experience</div>
+  <div class="section-title">Where I've<br>worked.</div>
+
+  <div class="timeline fade-in">
+    <div class="timeline-item">
+      <div class="timeline-header"><div class="timeline-role">Data Analyst Intern (Client Project)</div><div class="timeline-date">Jan 2026 &ndash; Present</div></div>
+      <div class="timeline-company">HubSpot &middot; Boston, MA &middot; On-site</div>
+      <ul class="timeline-desc">
+        <li>Conducting EDA on customer experience datasets (CSAT, NPS, support interactions) to identify patterns behind user frustration</li>
+        <li>Cleaning, transforming, and validating large datasets to ensure data quality and reliability</li>
+        <li>Developing visualizations and insights to uncover customer pain points across product and support workflows</li>
+        <li>Translating business questions into actionable recommendations using Python, Excel, and Tableau</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-header"><div class="timeline-role">Portfolio Specialist</div><div class="timeline-date">Sep 2024 &ndash; Nov 2024</div></div>
+      <div class="timeline-company">Corizo &middot; India &middot; Hybrid</div>
+      <ul class="timeline-desc">
+        <li>Improved conversion rates by 10% through advanced customer segmentation and lead analysis</li>
+        <li>Tracked CTR, engagement rates, and ROI across channels using Google Analytics and CRM data</li>
+        <li>Developed dashboards and reports to support stakeholder decision-making</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-header"><div class="timeline-role">Software Trainee</div><div class="timeline-date">Jan 2024 &ndash; Mar 2024</div></div>
+      <div class="timeline-company">Zenardy &middot; India &middot; On-site</div>
+      <ul class="timeline-desc">
+        <li>Built automated Power BI dashboards that improved reporting efficiency by 30%</li>
+        <li>Conducted A/B testing on marketing strategies, increasing conversion rates by 12%</li>
+        <li>Wrote SQL queries to extract and analyze large datasets for data-driven decision-making</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-header"><div class="timeline-role">Salesforce Developer</div><div class="timeline-date">Nov 2023 &ndash; Dec 2023</div></div>
+      <div class="timeline-company">Salesforce &middot; India &middot; Hybrid</div>
+      <ul class="timeline-desc">
+        <li>Developed Apex code and Lightning Web Components for scalable CRM solutions</li>
+        <li>Implemented Flows and workflow automation to optimize business processes</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="projects">
+  <div class="section-label">03 &mdash; Projects</div>
+  <div class="section-title">Things I've<br>built.</div>
+
+  <div class="projects-grid fade-in">
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-icon">&#128201;</div>
+        <div class="project-tag">ML &middot; Analytics</div>
+      </div>
+      <div class="project-title">
+        <a href="https://github.com/jeyshanthleo/Revenue-leakage-detection-system" target="_blank" rel="noopener noreferrer">
+          Predictive Revenue Leakage Detection &amp; Churn Risk Analytics
+        </a>
+      </div>
+      <p class="project-desc">End-to-end ML system to identify at-risk customers and estimate revenue leakage for subscription businesses. Combined CLV estimation, predictive modeling, and interactive Streamlit dashboards.</p>
+      <div class="project-metrics">
+        <div class="metric"><div class="metric-val">91%</div><div class="metric-lbl">Recall</div></div>
+        <div class="metric"><div class="metric-val">83%</div><div class="metric-lbl">Precision</div></div>
+        <div class="metric"><div class="metric-val">0.87</div><div class="metric-lbl">F1 Score</div></div>
+      </div>
+      <div class="project-techs"><span class="tech-pill">Python</span><span class="tech-pill">Random Forest</span><span class="tech-pill">Pandas</span><span class="tech-pill">Streamlit</span><span class="tech-pill">Plotly</span></div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-icon">&#129302;</div>
+        <div class="project-tag">AI &middot; Retention</div>
+      </div>
+      <div class="project-title">
+        <a href="https://github.com/jeyshanthleo/SmartRetain-AI" target="_blank" rel="noopener noreferrer">
+          SmartRetain AI &mdash; Churn Prediction &amp; Retention Strategy
+        </a>
+      </div>
+      <p class="project-desc">AI-powered churn prediction that analyzes customer behavior and generates personalized retention recommendations. Interactive Streamlit dashboard with AWS deployment experimentation.</p>
+      <div class="project-metrics">
+        <div class="metric"><div class="metric-val">85%</div><div class="metric-lbl">Accuracy</div></div>
+        <div class="metric"><div class="metric-val">AWS</div><div class="metric-lbl">Deployment</div></div>
+        <div class="metric"><div class="metric-val">Real-time</div><div class="metric-lbl">Dashboard</div></div>
+      </div>
+      <div class="project-techs"><span class="tech-pill">Python</span><span class="tech-pill">Scikit-learn</span><span class="tech-pill">Streamlit</span><span class="tech-pill">AWS</span></div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-icon">&#128269;</div>
+        <div class="project-tag">NLP &middot; Deep Learning</div>
+      </div>
+      <div class="project-title">
+        <a href="https://www.atlantis-press.com/proceedings/icisd-25/126017032" target="_blank" rel="noopener noreferrer">
+          ReviewGuard &mdash; NLP Framework for Fake Review Detection
+        </a>
+      </div>
+      <p class="project-desc">NLP system detecting fake reviews, classifying emotional tone, and categorizing themes using LSTM, TF-IDF, and multi-task learning. Best Paper Award at ICISD 2025, published by Springer Nature.</p>
+      <div class="project-metrics">
+        <div class="metric"><div class="metric-val">95.4%</div><div class="metric-lbl">Accuracy</div></div>
+        <div class="metric"><div class="metric-val">&#127942;</div><div class="metric-lbl">Best Paper</div></div>
+        <div class="metric"><div class="metric-val">Springer</div><div class="metric-lbl">Published</div></div>
+      </div>
+      <div class="project-techs"><span class="tech-pill">Python</span><span class="tech-pill">LSTM</span><span class="tech-pill">TF-IDF</span><span class="tech-pill">NLP</span><span class="tech-pill">Multi-task Learning</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="charts">
+  <div class="section-label">04 &mdash; Analytics</div>
+  <div class="section-title">Skills &amp; impact<br><em>visualized.</em></div>
+
+  <div class="charts-grid fade-in">
+    <div class="chart-card">
+      <div class="chart-header">
+        <span class="chart-title">Skill Proficiency Radar</span>
+        <span class="chart-badge">CORE</span>
+      </div>
+      <div class="chart-canvas-wrap"><canvas id="radarChart"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <span class="chart-title">Quantified Impact Highlights</span>
+        <span class="chart-badge">% IMPROVEMENT</span>
+      </div>
+      <div class="chart-canvas-wrap"><canvas id="impactChart"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <span class="chart-title">Tool Distribution</span>
+        <span class="chart-badge">STACK</span>
+      </div>
+      <div class="chart-canvas-wrap"><canvas id="donutChart"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <span class="chart-title">Forecast Model RMSE Comparison</span>
+        <span class="chart-badge">TIME SERIES</span>
+      </div>
+      <div class="chart-canvas-wrap"><canvas id="rmseChart"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="certifications">
+  <div class="section-label">05 &mdash; Certifications</div>
+  <div class="section-title">Credentials &amp;<br>certifications.</div>
+
+  <div class="certs-grid fade-in">
+    <div class="cert-card"><div class="cert-icon">&#127885;</div><div><div class="cert-name">Alteryx Designer Advanced</div><div class="cert-issuer">Alteryx</div><div class="cert-date">Feb 2026 &middot; Expires Feb 2028</div></div></div>
+    <div class="cert-card"><div class="cert-icon">&#127885;</div><div><div class="cert-name">Alteryx Designer Core</div><div class="cert-issuer">Alteryx</div><div class="cert-date">Feb 2026 &middot; Expires Feb 2028</div></div></div>
+    <div class="cert-card"><div class="cert-icon">&#128202;</div><div><div class="cert-name">Associate Data Analyst</div><div class="cert-issuer">DataCamp</div><div class="cert-date">Feb 2026</div></div></div>
+    <div class="cert-card"><div class="cert-icon">&#128217;</div><div><div class="cert-name">Microsoft Excel Professional Certificate</div><div class="cert-issuer">Microsoft</div><div class="cert-date">Sep 2025</div></div></div>
+    <div class="cert-card"><div class="cert-icon">&#128013;</div><div><div class="cert-name">Crash Course on Python</div><div class="cert-issuer">Google</div><div class="cert-date">May 2023</div></div></div>
+    <div class="cert-card"><div class="cert-icon">&#128187;</div><div><div class="cert-name">Introduction to Software Engineering</div><div class="cert-issuer">IBM</div><div class="cert-date">May 2023</div></div></div>
+    <div class="cert-card"><div class="cert-icon">&#127891;</div><div><div class="cert-name">Divide &amp; Conquer, Sorting &amp; Searching</div><div class="cert-issuer">Stanford University</div><div class="cert-date">May 2023</div></div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="education">
+  <div class="section-label">06 &mdash; Education</div>
+  <div class="section-title">Academic<br>background.</div>
+
+  <div class="edu-grid fade-in">
+    <div class="edu-card">
+      <div class="edu-degree">MS, Business Analytics</div>
+      <div class="edu-school">Northeastern University</div>
+      <div class="edu-period">Sep 2025 &ndash; Dec 2026 &middot; Boston, MA</div>
+      <p style="font-size:13px;color:var(--text-muted);margin-top:8px;line-height:1.6">Focusing on data analytics, statistical modeling, machine learning, and business intelligence.</p>
+    </div>
+    <div class="edu-card">
+      <div class="edu-degree">BTech, Computer Science</div>
+      <div class="edu-school">SRM IST Vadapalani Campus</div>
+      <div class="edu-period">2021 &ndash; 2025 &middot; India</div>
+      <p style="font-size:13px;color:var(--text-muted);margin-top:8px;line-height:1.6">Foundation in algorithms, data structures, software engineering, and statistical analysis.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="publication">
+  <div class="section-label">07 &mdash; Research</div>
+  <div class="section-title">Published<br>research.</div>
+
+  <a href="https://www.atlantis-press.com/proceedings/icisd-25/126017032" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;">
+    <div class="pub-card fade-in publication-card">
+      <div class="pub-year">2025</div>
+      <div style="flex:1">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div class="pub-title">ReviewGuard — Fake Review Detection Using NLP and Deep Learning</div>
+          <div class="paper-link-badge">View Paper ↗</div>
+        </div>
+        <div class="pub-venue">ICISD · Springer Nature · Oct 31, 2025</div>
+        <p class="pub-desc">Presents ReviewGuard, a comprehensive NLP-based system to detect fake reviews, analyze emotional tone, and classify thematic relevance using LSTM networks, TF-IDF, semantic embeddings, and multi-task learning. The LSTM model achieved 95.4% classification accuracy on Amazon datasets. <strong style="color:var(--accent)">Awarded Best Paper at ICISD 2025.</strong></p>
+      </div>
+    </div>
+  </a>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT (SOCIALS + FORMSPREE) -->
+<section id="contact">
+  <div class="contact-wrapper fade-in">
+    <div class="section-label" style="text-align:center">08 &mdash; Contact</div>
+    <div class="section-title" style="text-align:center">Let's work<br><em>together.</em></div>
+    <p class="contact-subtext">Connect with me or send a message directly — I’ll get back to you soon.</p>
+
+    <div class="social-links" style="margin-bottom:22px">
+      <a href="https://www.linkedin.com/in/jeyshanth/" target="_blank" class="social-link" rel="noopener noreferrer">&#128188; LinkedIn</a>
+      <a href="https://github.com/jeyshanthleo" target="_blank" class="social-link" rel="noopener noreferrer">&#128025; GitHub</a>
+      <!-- Replace with your real Instagram URL anytime -->
+      <a href="https://www.instagram.com/_jeyshanth/" target="_blank" class="social-link" rel="noopener noreferrer">&#127916; Instagram</a>
+    </div>
+
+    <div class="contact-card">
+      <div class="contact-card-head">
+        <div class="contact-card-title">Send me a message</div>
+        <div class="contact-card-badge">FORMSPREE</div>
+      </div>
+
+      <!-- ✅ FIXED: Your real Formspree endpoint is set here -->
+      <form class="contact-form" id="contactForm" action="https://formspree.io/f/xwvndpyp" method="POST">
+        <div class="contact-grid">
+          <div class="field">
+            <label for="name">Your name</label>
+            <input id="name" name="name" type="text" placeholder="Jane Doe" required>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="jane@email.com" required>
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:14px">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" placeholder="Tell me what you're looking for..." required></textarea>
+        </div>
+
+        <!-- Optional nice-to-haves for Formspree -->
+        <input type="hidden" name="_subject" value="New message from portfolio site">
+        <input type="text" name="_gotcha" style="display:none">
+
+        <div class="form-actions">
+          <button class="btn-primary" type="submit">→ Send message</button>
+          <!-- ✅ FIXED: Resume button in contact now points to your PDF -->
+          <a href="./assets/Docs/Jeyshanth_Leo_resume.pdf" target="_blank" rel="noopener noreferrer" class="btn-resume" id="resumeBtn2">&#128196; Resume</a>
+        </div>
+
+        <div id="formStatus">✅ Message sent! I’ll reply soon.</div>
+        <p class="form-note">This form is powered by Formspree. If you don’t receive emails, check Formspree dashboard → Settings → Email notifications.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&#169; 2026 Jeyshanth Leo</p>
+  <p>Data Analyst &middot; MSBA @ Northeastern University</p>
+</footer>
+
+<script>
+/* fade-in */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+/* Chart defaults */
+Chart.defaults.color = '#7878a0';
+Chart.defaults.borderColor = '#2a2a3e';
+Chart.defaults.font.family = "'DM Mono', monospace";
+Chart.defaults.font.size = 11;
+
+/* RADAR */
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: {
+    labels: ['Python / SQL','Data Cleaning','EDA','Data Analysis','Data Viz (Tableau/BI)','Microsoft Office','Alteryx','Predictive Modeling','NLP / ML','Customer Analytics'],
+    datasets: [{
+      label: 'Proficiency',
+      data: [92,90,88,86,80,85,90,82,78,85],
+      backgroundColor: 'rgba(0,229,160,0.15)',
+      borderColor: '#00e5a0',
+      borderWidth: 2,
+      pointBackgroundColor: '#00e5a0',
+      pointBorderColor: '#00e5a0',
+      pointRadius: 5,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      r: {
+        min: 0, max: 100,
+        ticks: { stepSize: 20, display: false },
+        grid: { color: '#2a2a3e' },
+        angleLines: { color: '#2a2a3e' },
+        pointLabels: { color: '#7878a0', font: { size: 11, family: "'DM Mono', monospace" } }
+      }
+    }
+  }
+});
+
+/* IMPACT BAR */
+new Chart(document.getElementById('impactChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Reporting Efficiency\n(Zenardy)', 'Conversion Rate\n(Zenardy)', 'Lead Conversion\n(Corizo)'],
+    datasets: [{
+      label: '% Improvement',
+      data: [30, 12, 10],
+      backgroundColor: ['rgba(0,229,160,0.5)', 'rgba(0,190,160,0.4)', 'rgba(91,143,255,0.45)'],
+      borderColor: ['#00e5a0', '#00c0a0', '#5b8fff'],
+      borderWidth: 1,
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { beginAtZero: true, max: 40, ticks: { callback: v => v + '%' }, grid: { color: '#2a2a3e' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+/* DONUT */
+new Chart(document.getElementById('donutChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Python', 'SQL', 'Tableau', 'Power BI', 'Excel/Other'],
+    datasets: [{
+      data: [35, 25, 18, 12, 10],
+      backgroundColor: ['#00e5a0','#5b8fff','#f7c948','#b07eff','#ff6b6b'],
+      borderColor: '#111118',
+      borderWidth: 3,
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '65%',
+    plugins: { legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true, pointStyleWidth: 10, color: '#7878a0' } } }
+  }
+});
+
+/* RMSE HORIZONTAL BAR */
+new Chart(document.getElementById('rmseChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Linear Trend','Quadratic Trend','Exp. Smooth a=0.2','Exp. Smooth a=0.4','Moving Avg (3)','Moving Avg (5)'],
+    datasets: [{
+      label: 'RMSE',
+      data: [155, 140, 98, 105, 120, 128],
+      backgroundColor: [
+        'rgba(247,201,72,0.55)','rgba(247,201,72,0.45)',
+        'rgba(0,229,160,0.55)','rgba(0,190,160,0.5)',
+        'rgba(247,201,72,0.4)','rgba(247,201,72,0.35)'
+      ],
+      borderColor: ['#f7c948','#f7c948','#00e5a0','#00c0a0','#f7c948','#f7c948'],
+      borderWidth: 1,
+      borderRadius: 3,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { beginAtZero: true, grid: { color: '#2a2a3e' }, title: { display: true, text: 'RMSE - lower is better', color: '#7878a0' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+/* ✅ FORMSPREE SUBMIT (NO REDIRECT) */
+const contactForm = document.getElementById('contactForm');
+const formStatus = document.getElementById('formStatus');
+
+if (contactForm) {
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // show sending status
+    if (formStatus) {
+      formStatus.style.display = 'block';
+      formStatus.textContent = '⏳ Sending...';
+    }
+
+    try {
+      const formData = new FormData(contactForm);
+
+      const res = await fetch(contactForm.action, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (res.ok) {
+        if (formStatus) formStatus.textContent = "✅ Message sent! I’ll reply soon.";
+        contactForm.reset();
+      } else {
+        if (formStatus) formStatus.textContent = "❌ Couldn’t send. Please try again or DM me on LinkedIn.";
+      }
+    } catch (err) {
+      if (formStatus) formStatus.textContent = "❌ Network issue. Please try again.";
+    }
+  });
+}
+</script>
+</body>
+</html>
